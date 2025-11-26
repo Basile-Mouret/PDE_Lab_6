@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 
 
-files = glob.glob("output_state_h_*.txt")
+files = glob.glob("data/output_state_h_*.txt")
 files.sort()
 
 

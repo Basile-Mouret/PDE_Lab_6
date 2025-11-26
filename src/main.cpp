@@ -72,7 +72,7 @@ public:
 		char buffer[filename.length()+100];
 		sprintf(buffer, filename.c_str(), timestamp);
 
-		std::cout << "Writing to " << buffer << std::endl;
+		std::cout << "Writing to " << buffer << "\n";
 		i_data_vector.to_file(buffer);
 	}
 
@@ -222,9 +222,9 @@ public:
 
 	void state_vars_to_file()
 	{
-		data_to_file(state_vars[0], "output_state_h_%012.4f.txt", simtime);
-		data_to_file(state_vars[1], "output_state_v_%012.4f.txt", simtime);
-		data_to_file(const_vars[0], "output_state_b_%012.4f.txt", simtime);
+		data_to_file(state_vars[0], "data/output_state_h_%012.4f.txt", simtime);
+		data_to_file(state_vars[1], "data/output_state_v_%012.4f.txt", simtime);
+		data_to_file(const_vars[0], "data/output_state_b_%012.4f.txt", simtime);
 	}
 };
 

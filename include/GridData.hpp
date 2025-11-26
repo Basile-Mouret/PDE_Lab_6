@@ -114,7 +114,7 @@ public:
 
 		for (std::size_t i = 0; i < size; i++)
 		{
-			f << discConfig->dx*i << "\t" << data[i] << std::endl;
+			f << discConfig->dx*i << "\t" << data[i] << "\n";
 		}
 
 		f.close();
