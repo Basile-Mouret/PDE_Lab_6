@@ -6,10 +6,13 @@ all: release
 
 release: 
 	mkdir -p out/
+	mkdir -p data/
 	$(CXX) --std=c++11 -O2 -I $(INCLUDE_DIR) src/main.cpp -o out/main
 
 debug:
+	mkdir -p out/
+	mkdir -p data/
 	$(CXX) --std=c++11 -O0 -g -DWAVE_DEBUG=1 -I $(INCLUDE_DIR) src/main.cpp -o main
 
 clean:
-	rm -rf out/
+	rm -rf out/ data/*
