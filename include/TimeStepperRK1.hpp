@@ -35,6 +35,11 @@ public:
 
 		for (int i = 0; i < NArraySize_; i++)
 			k1[i].setup_like(io_U[i]);
+      
+    this->df_dt(io_U, i_ops, k1);
+
+		for (int i = 0; i < NArraySize_; i++)
+		  io_U[i] = io_U[i] + i_dt*k1[i];
 
 		/*
 		 * You need to implement some time integration method here.

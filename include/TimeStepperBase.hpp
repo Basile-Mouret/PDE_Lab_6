@@ -49,8 +49,8 @@ public:
 		std::array<GridData<T_>,NArraySize_> &o_U
 	)
 	{
-		o_U[0] = config.sim_bavg * i_ops.diff1(i_U);
-		o_U[1] = abs(config.sim_g) * i_ops.diff1(i_U);
+		o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
+		o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
 	}
 
 
