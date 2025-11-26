@@ -44,11 +44,11 @@ public:
 		GridData<T> o;
 		o.setup_like(i_d);
 		for (std::size_t i = 1; i < o.size-1; i++){
-      o.data[i] = i_d.data[i] + (i_d.data[i+1]-i_d.data[i-1])*discConfig.dx;
+      o.data[i] = i_d.data[i] + (i_d.data[i+1]-i_d.data[i-1])*discConfig->dx;
     }
     // borders
-    o.data[0] = i_d.data[0] + (i_d.data[1]-i_d.data[o.size])*discConfig.dx;
-    o.data[o.size] = i_d.data[o.size] + (i_d.data[0]-i_d.data[o.size-1])*discConfig.dx;
+    o.data[0] = i_d.data[0] + (i_d.data[1]-i_d.data[o.size])*discConfig->dx;
+    o.data[o.size] = i_d.data[o.size] + (i_d.data[0]-i_d.data[o.size-1])*discConfig->dx;
 
 		//o.set_zero();
 		return o;

@@ -3,6 +3,7 @@
 
 #include "GridData.hpp"
 #include "Operators.hpp"
+#include <cmath>
 
 
 
@@ -48,17 +49,8 @@ public:
 		std::array<GridData<T_>,NArraySize_> &o_U
 	)
 	{
-		// Just return zero so far
-		o_U[0].set_zero();
-		o_U[1].set_zero();
-
-		/**
-		 * Hints:
-		 *  - Gravitational accelleration is availabe via config.sim_g
-		 *  - Average height field is available via config.sim_bavg
-		 *    You need to use the absolute value of it for the average height!
-		 *  - Make use of the operator overloading in GridData
-		 */
+		o_U[0] = config.sim_bavg * i_ops.diff1(i_U);
+		o_U[1] = abs(config.sim_g) * i_ops.diff1(i_U);
 	}
 
 
