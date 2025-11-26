@@ -40,40 +40,23 @@ public:
 			tmp[i].setup_like(io_U[i]);
 		}
 
-		/*
-		 * We do nothing here so far.
-		 *
-		 * You need to implement some time integration method here.
-		 *
-		 * It's recommended that you first implement a forward Euler
-		 * (even if it's not stable, but you can test your algorithm)
-		 * and then to implement a higher order method.
-		 */
+		// k1 = f(y_n)
+		this->df_dt(io_U, i_ops, k1);
 
-		/*
-		 * Hints:
-		 *
-		 * 1) Wiki
-		 * ==============================
-		 * See, e.g.,
-		 *   https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods#Second-order_methods_with_two_stages
-		 * for more information
-		 *
-		 * Here, y = io_U
-		 *
-		 *
-		 * 2) Time Tendencies:
-		 * ==============================
-		 * You can compute
-		 *   k=df(y)/dt
-		 * by calling
-		 *
-		 * this->df_dt(y, i_ops, k);
-		 *
-		 * 3) Compute stage solution
-		 * ==============================
-		 * ...
-		 */
+		// y_tmp = y_n + (dt/2) * k1
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			tmp[i] = io_U[i] + (i_dt * static_cast<T_>(0.5)) * k1[i];
+		}
+
+		// k2 = f(y_tmp)
+		this->df_dt(tmp, i_ops, k2);
+
+		// y_{n+1} = y_n + dt * k2
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			io_U[i] = io_U[i] + i_dt * k2[i];
+		}
 	}
 };
 
