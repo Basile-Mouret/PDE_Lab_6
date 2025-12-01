@@ -23,50 +23,59 @@ public:
      * RK4 time integrator which updates
      */
     void time_integrate(
-            std::array<GridData<T_>, NArraySize_> &io_U,    ///< simulation state at t_n for input, output is t_n + dt
-            Operators<T_> &i_ops,
-            T_ i_dt        ///< time step size
-    ) {
-        std::array<GridData<T_>, NArraySize_> k1, k2, k3, k4, tmp;
+		std::array<GridData<T_>,NArraySize_> &io_U,	///< simulation state at t_n for input, output is t_n + dt
+		Operators<T_> &i_ops,
+		T_ i_dt		///< time step size
+	)
+	{
+		std::array<GridData<T_>,NArraySize_> k1, k2, k3, k4, tmp;
 
-        // setup GridData which we might use for the different stages of the PDE solver
-        for (int i = 0; i < NArraySize_; i++) {
-            k1[i].setup_like(io_U[i]);
-            k2[i].setup_like(io_U[i]);
-            k3[i].setup_like(io_U[i]);
-            k4[i].setup_like(io_U[i]);
-            tmp[i].setup_like(io_U[i]);
-        }
+		// setup GridData which we might use for the different stages of the PDE solver
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			k1[i].setup_like(io_U[i]);
+			k2[i].setup_like(io_U[i]);
+			k3[i].setup_like(io_U[i]);
+			k4[i].setup_like(io_U[i]);
+			tmp[i].setup_like(io_U[i]);
+		}
 
-        /*
-         * We do nothing here so far.
-         */
+		// k1 = f(y_n)
+		this->df_dt(io_U, i_ops, k1);
 
-        /*
-         * Hints:
-         *
-         * 1) Wiki
-         * ==============================
-         * See, e.g.,
-         *   https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods#The_Runge%E2%80%93Kutta_method
-         * for more information on 4th order (classical) Runge Kutta method
-         *
-         * Here, y = io_U
-         *
-         *
-         * 2) Time Tendencies:
-         * ==============================
-         * You can compute
-         *   k=df(y)/dt
-         * by calling
-         *
-         * this->df_dt(y, i_ops, k);
-         *
-         * 3) Compute stage solution
-         * ==============================
-         * ...
-         */
-    }
+		// y_tmp = y_n + (dt/2) * k1
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			tmp[i] = io_U[i] + (i_dt * static_cast<T_>(0.5)) * k1[i];
+		}
+
+		// k2 = f(y_tmp)
+		this->df_dt(tmp, i_ops, k2);
+
+		// y_tmp = y_n + (dt/2) * k2
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			tmp[i] = io_U[i] + (i_dt * static_cast<T_>(0.5)) * k2[i];
+		}
+
+		// k3 = f(y_tmp)
+		this->df_dt(tmp, i_ops, k3);
+
+		// y_tmp = y_n + (dt/2) * k2
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			tmp[i] = io_U[i] + i_dt * k3[i];
+		}
+
+		// k4 = f(y_tmp)
+		this->df_dt(tmp, i_ops, k4);
+
+		// y_{n+1} = y_n + dt * k2
+		for (int i = 0; i < NArraySize_; i++)
+		{
+			io_U[i] = io_U[i] + i_dt / static_cast<T_>(6.0) * k1[i] + i_dt / static_cast<T_>(3.0) * k2[i] + i_dt / static_cast<T_>(3.0) * k3[i] + i_dt / static_cast<T_>(6.0) * k4[i];
+		}
+	}
 };
 
 #endif
