@@ -28,6 +28,9 @@ pip-wheel-metadata/
 # Data outputs (numerical simulation outputs)
 data/output_state_*.txt
 
+# Generated output directory
+out/
+
 # Optional: ignore all txt outputs in data if you don't want any tracked
 # data/*.txt
 
