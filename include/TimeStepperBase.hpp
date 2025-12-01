@@ -43,8 +43,14 @@ public:
             const Operators<T_> &i_ops,
             std::array<GridData<T_>, NArraySize_> &o_U
     ) {
+      if (config.nonlinear_equation){
+        o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
+        o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]) - i_U[1]*i_ops.diff1(i_U[1]); // added nonlinearity
+      }
+      else{
         o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
         o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
+      }
     }
 
 
