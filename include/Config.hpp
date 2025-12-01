@@ -40,6 +40,9 @@ public:
     // Use nonlinear equation
     bool nonlinear_equation = true;
 
+    // staggered grid
+    bool use_staggered_grid = false;
+
     // program argument information
     int argc;
     char *const *argv;
@@ -62,6 +65,7 @@ public:
         std::cout << "	--output-freq [float]" << std::endl;
         std::cout << "	--benchmark-name [string]" << std::endl;
         std::cout << "	--nonlinear-equation [int]" << std::endl;
+        std::cout << "	--staggered-grid [0/1]" << std::endl;
         std::cout << "	--help" << std::endl;
         std::cout << std::endl;
     }
@@ -88,6 +92,7 @@ public:
                     {"nonlinear-equation",  required_argument, 0, 0},
                     {"timestepping-method", required_argument, 0, 0},
                     {"help",                no_argument,       0, 0},
+                    {"staggered-grid",      required_argument, 0, 0},
                     {0,                     0,                 0, 0}
             };
 
@@ -119,6 +124,8 @@ public:
                         nonlinear_equation = atoi(optarg);
                     else if (optstr == "timestepping-method")
                         timestepping_method = optarg;
+                    else if (optstr == "staggered-grid")
+                        use_staggered_grid = atoi(optarg);
                     else if (optstr == "help") {
                         print_help();
                         exit(0);
@@ -166,6 +173,7 @@ public:
         std::cout << " + timestepping_method: " << timestepping_method << std::endl;
         std::cout << " + benchmark_name: " << benchmark_name << std::endl;
         std::cout << " + nonlinear_equation: " << nonlinear_equation << std::endl;
+        std::cout << " + use_staggered_grid: " << use_staggered_grid << std::endl;
     }
 };
 

@@ -49,6 +49,30 @@ public:
         //o.set_zero();
         return o;
     }
+
+    GridData<T> diff1_staggered_h(const GridData<T> &i_v) const {
+        GridData<T> o;
+        o.setup_like(i_v);
+        
+        for (std::size_t i = 0; i < o.size; i++) {
+            std::size_t i_prev = (i == 0) ? (o.size - 1) : (i - 1);
+            o.data[i] = (i_v.data[i] - i_v.data[i_prev]) * discConfig->inv_dx;
+        }
+        
+        return o;
+    }
+
+    GridData<T> diff1_staggered_v(const GridData<T> &i_h) const {
+        GridData<T> o;
+        o.setup_like(i_h);
+        
+        for (std::size_t i = 0; i < o.size; i++) {
+            std::size_t i_next = (i + 1) % o.size;
+            o.data[i] = (i_h.data[i_next] - i_h.data[i]) * discConfig->inv_dx;
+        }
+        
+        return o;
+}
 };
 
 #endif

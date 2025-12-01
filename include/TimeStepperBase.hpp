@@ -43,8 +43,13 @@ public:
             const Operators<T_> &i_ops,
             std::array<GridData<T_>, NArraySize_> &o_U
     ) {
-        o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
-        o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
+        if (config.use_staggered_grid) {
+            o_U[0] = -abs(config.sim_bavg) * i_ops.diff1_staggered_h(i_U[1]);
+            o_U[1] = -config.sim_g * i_ops.diff1_staggered_v(i_U[0]);
+        } else {
+            o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
+            o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
+        }
     }
 
 
