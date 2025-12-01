@@ -6,52 +6,46 @@
 #include <cmath>
 
 
-
-template <typename T_, std::size_t NArraySize_, std::size_t NConstArraySize_>
-class TimeStepperBase
-{
+template<typename T_, std::size_t NArraySize_, std::size_t NConstArraySize_>
+class TimeStepperBase {
 protected:
-	const std::array<GridData<T_>,NConstArraySize_> &const_vars;
-	const Config<T_> &config;
+    const std::array<GridData<T_>, NConstArraySize_> &const_vars;
+    const Config<T_> &config;
 
 public:
-	TimeStepperBase(
-		const std::array<GridData<T_>,NConstArraySize_> &i_const_vars,
-		const Config<T_> &i_config
-	)	:
-		const_vars(i_const_vars),
-		config(i_config)
-	{
-	}
-
+    TimeStepperBase(
+            const std::array<GridData<T_>, NConstArraySize_> &i_const_vars,
+            const Config<T_> &i_config
+    ) :
+            const_vars(i_const_vars),
+            config(i_config) {
+    }
 
 
 public:
-	/**
-	 * General time integration interface to be called by individual time steppers
-	 */
-	virtual
-	void time_integrate(
-		std::array<GridData<T_>,NArraySize_> &io_U,	///< simulation state at t_n for input, output is t_n + dt
-		Operators<T_> &i_ops,
-		T_ i_dt		///< time step size
-	) = 0;
-
+    /**
+     * General time integration interface to be called by individual time steppers
+     */
+    virtual
+    void time_integrate(
+            std::array<GridData<T_>, NArraySize_> &io_U,    ///< simulation state at t_n for input, output is t_n + dt
+            Operators<T_> &i_ops,
+            T_ i_dt        ///< time step size
+    ) = 0;
 
 
 public:
-	/**
-	 * Compute the time derivatives for a given state
-	 */
-	void df_dt(
-		const std::array<GridData<T_>,NArraySize_> &i_U,
-		const Operators<T_> &i_ops,
-		std::array<GridData<T_>,NArraySize_> &o_U
-	)
-	{
-		o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
-		o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
-	}
+    /**
+     * Compute the time derivatives for a given state
+     */
+    void df_dt(
+            const std::array<GridData<T_>, NArraySize_> &i_U,
+            const Operators<T_> &i_ops,
+            std::array<GridData<T_>, NArraySize_> &o_U
+    ) {
+        o_U[0] = -abs(config.sim_bavg) * i_ops.diff1(i_U[1]);
+        o_U[1] = -config.sim_g * i_ops.diff1(i_U[0]);
+    }
 
 
 };
