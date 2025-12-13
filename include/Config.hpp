@@ -38,7 +38,7 @@ public:
     std::string benchmark_name = "gaussian_bump";
 
     // Use nonlinear equation
-    bool nonlinear_equation = true;
+    bool nonlinear_equation = false;
 
     // program argument information
     int argc;
